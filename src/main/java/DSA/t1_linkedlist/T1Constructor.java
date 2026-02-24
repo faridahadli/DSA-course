@@ -121,12 +121,75 @@ class LinkedList{
         return true;
     }
 
-    public boolean insert(int index, String value){
+    public boolean insert(int index, String value){ // my implemetation is again different :)
         if(index >= length)
+            return false;
         if(index == 0){
-
+            prepend(value);
+            return true;
+        }
+        if(index == (length-1)){
+            append(value);
+            return true;
+        }
+        Node node = new Node(value);
+        Node tmp = head;
+        int counter = 0;
+        while (tmp!=null){
+            if(counter+1 == index){
+                node.next = tmp.next;
+                tmp.next = node;
+                length++;
+                return true;
+            }
+            tmp = tmp.next;
         }
         return false;
+    }
+
+    public Node remove (int index){
+
+        if( index>=length || index<0 )
+            return null;
+        if(index == 0)
+            return removeFirst();
+        if (index == length-1)
+            return removeLast();
+        Node prev = get(index-1);
+        Node rmv =  prev.next;
+        prev.next = rmv.next;
+        rmv.next = null;
+        length--;
+        return rmv;
+
+
+    }
+
+    public void reverse(){ // this implementation from class is way better
+        int pointerA = 0;
+        int pointerB = length-1;
+        String tempValue;
+        while (pointerA<pointerB){
+            tempValue = get(pointerA).value;
+            set(pointerA, get(pointerB).value);
+            set(pointerB, tempValue);
+            pointerA++;pointerB++;
+        }
+
+    }
+
+    public void reverseBetter() {
+        Node temp = head;
+        head = tail;
+        tail = temp;
+        Node after = temp.next;
+        Node before = null;
+        for (int i = 0; i < length; i++) {
+            after = temp.next;
+            temp.next = before;
+            before = temp;
+            temp = after;
+        }
     }
 
     public Node getHead() {
